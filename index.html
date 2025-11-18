@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Birthday Surprise 💖</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+
+    body{
+      font-family:"Poppins",sans-serif;
+      min-height:100vh;
+      background: radial-gradient(circle at top, #ffd1dc, #ffe6ff, #fff0f5);
+      overflow-x:hidden;
+      overflow-y:auto;
+      position:relative;
+      color:#333;
+    }
+
+    .page{
+      min-height:100vh;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:2rem 1.5rem 3rem;
+      text-align:center;
+      position:relative;
+      z-index:1;
+    }
+    .page.active{
+      display:flex;
+    }
+
+    .inner-box{
+      max-width:520px;
+      margin:0 auto;
+      background:rgba(255,255,255,0.9);
+      border-radius:22px;
+      padding:2rem 1.6rem 2.4rem;
+      box-shadow:0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    .title-script{
+      font-family:"Great Vibes",cursive;
+      font-size:3rem;
+      color:#ff2f78;
+      margin-bottom:0.5rem;
+    }
+    .sub-name{
+      font-size:1.5rem;
+      font-weight:600;
+      letter-spacing:1px;
+      text-transform:uppercase;
+      color:#444;
+    }
+
+    .big-emoji{
+      font-size:2.2rem;
+      margin-bottom:1rem;
+    }
+
+    p{
+      font-size:0.98rem;
+      line-height:1.6;
+      margin-bottom:0.7rem;
+    }
+
+    .btn{
+      display:inline-block;
+      margin-top:1.1rem;
+      padding:0.8rem 1.8rem;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-size:0.95rem;
+      font-weight:600;
+      background:linear-gradient(135deg,#ff4f8b,#ff9a9e);
+      color:#fff;
+      box-shadow:0 8px 18px rgba(255,79,139,0.4);
+      transition:0.2s;
+    }
+    .btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 12px 26px rgba(255,79,139,0.6);
+    }
+
+    /* Timer Style */
+    .timer-box{
+      margin:1rem auto 0.8rem;
+      padding:0.8rem 0.6rem;
+      border-radius:16px;
+      background:#fff5fa;
+      border:1px dashed #ffb6d9;
+      display:flex;
+      justify-content:center;
+      gap:0.8rem;
+      flex-wrap:wrap;
+    }
+    .time-part{
+      min-width:60px;
+    }
+    .time-number{
+      font-size:1.2rem;
+      font-weight:600;
+      color:#ff2f78;
+    }
+    .time-label{
+      font-size:0.75rem;
+      text-transform:uppercase;
+      letter-spacing:0.05em;
+      color:#777;
+    }
+
+    .mini-box{
+      margin-top:0.8rem;
+      padding:0.7rem 0.8rem;
+      border-radius:14px;
+      background:#fff0f7;
+      font-size:0.9rem;
+      color:#555;
+    }
+
+    .loading-buttons{
+      display:flex;
+      justify-content:center;
+      gap:0.5rem;
+      margin-top:0.9rem;
+      flex-wrap:wrap;
+    }
+    .load-pill{
+      padding:0.4rem 0.9rem;
+      border-radius:999px;
+      border:none;
+      font-size:0.8rem;
+      background:#ffe1eb;
+      color:#ff2f78;
+      box-shadow:0 4px 10px rgba(0,0,0,0.08);
+      animation:pulse 1.2s infinite alternate;
+    }
+    @keyframes pulse{
+      from{transform:translateY(0);opacity:0.7;}
+      to{transform:translateY(-3px);opacity:1;}
+    }
+
+    /* CARD PAGE */
+    .card-click{
+      margin:1rem auto;
+      max-width:260px;
+      padding:1rem 1rem;
+      border-radius:18px;
+      border:2px dashed #ff9a9e;
+      background:#fff0f7;
+      cursor:pointer;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:0.3rem;
+      transition:0.2s;
+    }
+    .card-click:hover{
+      transform:translateY(-3px) scale(1.02);
+      box-shadow:0 10px 24px rgba(0,0,0,0.15);
+    }
+
+    /* Month Cards */
+    .months-grid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:0.8rem;
+      justify-content:center;
+      margin-top:0.5rem;
+    }
+    .month-card{
+      flex:1 1 150px;
+      max-width:160px;
+      background:#fff5fa;
+      border-radius:14px;
+      border:1px dashed #ffb6d9;
+      padding:0.7rem 0.6rem;
+      text-align:center;
+      box-shadow:0 6px 14px rgba(0,0,0,0.06);
+      font-size:0.85rem;
+      cursor:pointer;
+      transition:0.2s;
+    }
+    .month-card:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 20px rgba(0,0,0,0.12);
+    }
+    .month-label{
+      font-weight:600;
+      color:#ff2f78;
+      margin-bottom:0.25rem;
+      font-size:0.9rem;
+    }
+    .month-msg{
+      display:none;
+      margin-top:0.25rem;
+      color:#555;
+      line-height:1.5;
+    }
+
+    /* Hearts */
+    .heart{
+      position:fixed;
+      width:22px;
+      height:22px;
+      background:#ff4f8b;
+      transform:rotate(45deg);
+      opacity:0.9;
+      animation:floatUp 10s linear infinite;
+      z-index:0;
+    }
+    .heart::before,
+    .heart::after{
+      content:"";
+      position:absolute;
+      width:22px;height:22px;
+      background:#ff4f8b;
+      border-radius:50%;
+    }
+    .heart::before{top:-11px;left:0;}
+    .heart::after{top:0;left:-11px;}
+
+    @keyframes floatUp{
+      0%{transform:translateY(120vh) rotate(45deg);}
+      100%{transform:translateY(-120vh) rotate(45deg);opacity:0;}
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background music (use music.mp3 in same folder as index.html) -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="C:\Users\deeks\Desktop\Score Cards\music.mp3" type="audio/mp3">
+  </audio>
+
+  <script>
+    function createHeart(){
+      const h=document.createElement("div");
+      h.classList.add("heart");
+      h.style.left=Math.random()*100+"vw";
+      h.style.animationDuration=8+Math.random()*4+"s";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),12000);
+    }
+    setInterval(createHeart,450);
+  </script>
+
+  <!-- PAGE 1 -->
+  <section id="page1" class="page active">
+    <div class="inner-box">
+      <div class="big-emoji">❤️❤️❤️</div>
+      <p style="font-weight:600;margin-bottom:0.8rem;">Loading something cute...</p>
+      <p>🎂 ✨ 🎁 ❤️ 🎈</p>
+      <p style="font-size:0.85rem;color:#777;margin-top:1rem;">(Tap when you're ready 👇)</p>
+      <button class="btn" id="toPage2">Next ➜</button>
+    </div>
+  </section>
+
+  <!-- PAGE 2 -->
+  <section id="page2" class="page">
+    <div class="inner-box">
+      <div class="big-emoji">💗</div>
+      <p style="font-weight:600;font-size:1.1rem;margin-bottom:0.6rem;">Your special day is almost here, Pallavi 💖</p>
+
+      <div id="timerSection">
+        <div class="timer-box">
+          <div class="time-part">
+            <div class="time-number" id="seconds">10</div>
+            <div class="time-label">Sec</div>
+          </div>
+        </div>
+
+        <div class="mini-box">
+          Just a little countdown… for someone I talk to every single day 😌💗
+        </div>
+
+        <div class="loading-buttons">
+          <button class="load-pill">Loading...</button>
+        </div>
+      </div>
+
+      <p id="birthdayDate" style="display:none;margin-top:1rem;">19 November 2003</p>
+
+      <button class="btn" id="toPage3" style="display:none;">For you ➜</button>
+    </div>
+  </section>
+
+  <!-- PAGE 3 -->
+  <section id="page3" class="page">
+    <div class="inner-box">
+      <div class="title-script">Happy Birthday</div>
+      <div class="sub-name">Pallavi 🎂✨</div>
+
+      <p style="margin-top:1rem;">
+        Just a small something for the person  
+        I talk to every day without fail —  
+        the one who listens to all my nonsense  
+        with full patience 😆💗
+      </p>
+
+      <div class="card-click" id="openCard">
+        <div>Tap to open your 12 cute messages</div>
+        <div class="card-emoji">🎁</div>
+      </div>
+
+      <p class="from-line">From <span>Deekshi</span> 🩷</p>
+    </div>
+  </section>
+
+  <!-- PAGE 4 – 12 cute messages -->
+  <section id="page4" class="page">
+    <div class="inner-box">
+      <div class="big-emoji">💌</div>
+      <p style="margin-bottom:1rem;">
+        12 small messages for someone who is  
+        definitely more than just a friend to me. ✨
+      </p>
+
+      <div class="months-grid">
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg">You make even normal days feel a little nicer.</div>
+        </div>
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg">Thanks for listening to all my nonsense without judging.</div>
+        </div>
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg">I really appreciate you being there every day.</div>
+        </div>
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg">Talking to you always fixes my mood a little.</div>
+        </div>
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg">You’re one of the few people I never get tired talking to.</div>
+        </div>
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg">Some people feel like home… you’re one of them.</div>
+        </div>
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg">Thanks for letting me rant, overthink, and talk freely.</div>
+        </div>
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg">You make everything feel lighter just by being you.</div>
+        </div>
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg">If I don’t talk to you for one day, it feels weird.</div>
+        </div>
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg">You're the one person I can message anytime.</div>
+        </div>
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg">I like our small conversations… they mean a lot.</div>
+        </div>
+
+        <div class="month-card">
+          <div class="month-label">Tap to open 💌</div>
+          <div class="month-msg"><b>You are definitely more than a best friend.</b></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <script>
+    const page1=document.getElementById("page1");
+    const page2=document.getElementById("page2");
+    const page3=document.getElementById("page3");
+    const page4=document.getElementById("page4");
+
+    const toPage2=document.getElementById("toPage2");
+    const toPage3=document.getElementById("toPage3");
+    const openCard=document.getElementById("openCard");
+
+    const secondsEl=document.getElementById("seconds");
+    const timerSection=document.getElementById("timerSection");
+    const birthdayDate=document.getElementById("birthdayDate");
+
+    const bgMusic=document.getElementById("bgMusic");
+
+    let sec=10;
+
+    function showPage(n){
+      [page1,page2,page3,page4].forEach(p=>p.classList.remove("active"));
+      if(n===1)page1.classList.add("active");
+      if(n===2)page2.classList.add("active");
+      if(n===3){page3.classList.add("active");confettiFun();}
+      if(n===4)page4.classList.add("active");
+      window.scrollTo(0,0);
+    }
+
+    toPage2.onclick=()=>{
+      showPage(2);
+      bgMusic.play().catch(()=>{});
+      startTimer();
+    }
+
+    function startTimer(){
+      sec=10;
+      const int=setInterval(()=>{
+        sec--;
+        secondsEl.textContent=sec;
+        if(sec<=0){
+          clearInterval(int);
+          timerSection.style.display="none";
+          birthdayDate.style.display="block";
+          toPage3.style.display="inline-block";
+        }
+      },300);
+    }
+
+    toPage3.onclick=()=>showPage(3);
+
+    openCard.onclick=()=>showPage(4);
+
+    function confettiFun(){
+      const duration=1500;
+      const end=Date.now()+duration;
+
+      const frame=()=>{
+        confetti({particleCount:7,startVelocity:30,spread:360});
+        if(Date.now()<end){requestAnimationFrame(frame);}
+      };
+      frame();
+    }
+
+    // Tap to open each message
+    const monthCards=document.querySelectorAll(".month-card");
+    monthCards.forEach(card=>{
+      const msg=card.querySelector(".month-msg");
+      card.addEventListener("click",()=>{
+        msg.style.display="block";
+      });
+    });
+  </script>
+
+</body>
+</html>
